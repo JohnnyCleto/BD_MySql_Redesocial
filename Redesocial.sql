@@ -151,23 +151,23 @@ SELECT DISTINCT TIMESTAMPDIFF(YEAR, naicimento, CURDATE()) AS idade
 FROM usuario;
 
 -- Recuperação de Postagens feitas por um usuário chamado 'João'
-SELECT post.*
-FROM post
+SELECT postagem.*
+FROM postagem
 JOIN usuario ON postagem.id_usuario = usuario.id_usuario
 WHERE usuario.prime_nome = 'João';
 
 -- Comentários em uma Postagem com o texto 'Bom dia, mundo!'
 SELECT comentario.*
 FROM comentario
-JOIN postagem ON comentario.id_post = post.id_postagem
-WHERE post.conteudo LIKE 'Bom dia, mundo!';
+JOIN postagem ON comentario.id_postagem = postagem.id_postagem
+WHERE postagem.conteudo LIKE 'Bom dia, mundo!';
 
 -- Estatísticas de Atividades por usuário
 SELECT usuario.prime_nome,
-       COUNT(DISTINCT post.id_post) AS total_postagens,
+       COUNT(DISTINCT postagem.id_postagem) AS total_postagens,
        COUNT(DISTINCT comentario.id_comentario) AS total_comentarios
 FROM usuario
-LEFT JOIN post ON usuario.id_usuario = post.id_usuario
+LEFT JOIN postagem ON usuario.id_usuario = postagem.id_usuario
 LEFT JOIN comentario ON usuario.id_usuario = comentario.id_usuario
 GROUP BY usuario.prime_nome;
 
@@ -178,10 +178,9 @@ WHERE data_amizade >= CURDATE() - INTERVAL 30 DAY;
 
 -- Detalhes de um Usuário chamado 'Maria' incluindo postagens e amizades
 SELECT usuario.*,
-       post.*,
+       postagem.*,
        amizade.*
 FROM usuario
-LEFT JOIN post ON usuario.id_usuario = post.id_usuario
+LEFT JOIN postagem ON usuario.id_usuario = postagem.id_usuario
 LEFT JOIN amizade ON usuario.id_usuario = amizade.id_usuario
 WHERE usuario.prime_nome = 'Maria';
-
